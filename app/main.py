@@ -1,4 +1,5 @@
 #from random import randrange
+from turtle import title
 from typing import Optional
 import psycopg2
 from psycopg2.extras import RealDictCursor
@@ -49,28 +50,36 @@ def root():
     return ("Hello")
 
 
-@app.get("/sqlalchemy")
-def test(db:Session =Depends(get_db)):
-    return ("Success")
+
+
 @app.get("/posts")
-def get_posts():   
-    cursor.execute("select * from posts")   
-    post=cursor.fetchall()               #Read all
-    return {"posts":post}
+def get_posts(db:Session =Depends(get_db)):   
+   # cursor.execute("select * from posts")   
+   # post=cursor.fetchall()               #Read all
+    posts=db.query(models.Post).all()
+    return {"posts":posts}
 
 @app.get("/posts/{id}")
-def get_post(id:int):                #Read one specific post
-    cursor.execute("select * from posts where post_id=%s",str(id))
-    post=cursor.fetchone()
+def get_post(id:int,db:Session =Depends(get_db)):                #Read one specific post
+    #cursor.execute("select * from posts where post_id=%s",str(id))
+    #post=cursor.fetchone()
+    post=db.query(models.Post).filter(models.Post.id==id).first()
+    
     if not post:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail="Item not found")
     return ({"data": post})
 
 @app.post("/posts",status_code=status.HTTP_201_CREATED)
-def create_post(post:Post):
-    cursor.execute("insert into posts (title,content,published) values (%s,%s,%s) returning * ",(post.title,post.content,post.published))
-    new_post=cursor.fetchone()
-    conn.commit()
+def create_post(post:Post,db: Session = Depends(get_db)):
+    #cursor.execute("insert into posts (title,content,published) values (%s,%s,%s) returning * ",(post.title,post.content,post.published))
+    #new_post=cursor.fetchone()
+    #conn.commit()
+    
+    new_post=models.Post(**post.dict())
+
+    db.add(new_post)
+    db.commit()
+    db.refresh(new_post)
     return {"new_post":new_post}
 
 
