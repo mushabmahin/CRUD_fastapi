@@ -4,10 +4,11 @@ from typing import List, Optional
 import psycopg2
 from psycopg2.extras import RealDictCursor
 from pydantic import BaseModel
-import time 
+import time
+
 from . import models,schemas,utils
 from fastapi import FastAPI
-from .routers import posts,users
+from .routers import posts,users,auth
 from .database import engine
 
 models.Base.metadata.create_all(bind=engine)
@@ -48,6 +49,7 @@ def root():
 
 app.include_router(posts.router)
 app.include_router(users.router)
+app.include_router(auth.router)
 
 
 
