@@ -1,1 +1,1 @@
-project for learning fastapi
+project for learning fastapi and postgresql
