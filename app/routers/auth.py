@@ -5,7 +5,7 @@ from fastapi.security.oauth2 import OAuth2PasswordRequestForm
 from .. import schemas,models,utils,oauth2
 router=APIRouter(tags=["Login"])
 
-@router.post("/login")
+@router.post("/login",response_model=schemas.Token)
 def login(user_credentials: OAuth2PasswordRequestForm =Depends(),db: Session = Depends(get_db)):
 
     # OAuth2PasswordRequestForm storage format
@@ -29,4 +29,4 @@ def login(user_credentials: OAuth2PasswordRequestForm =Depends(),db: Session = D
             detail="Invalid credentials"
         )
     access_token=oauth2.create_token(data={"user_id":user.id})
-    return {"token": access_token,"token_type":"bearer"}
+    return {"access_token": access_token,"token_type":"bearer"}

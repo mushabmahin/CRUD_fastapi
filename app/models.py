@@ -1,6 +1,6 @@
 from datetime import datetime
-
-from sqlalchemy import   Column,Integer,Boolean,String
+from sqlalchemy.orm import Relationship
+from sqlalchemy import   Column, ForeignKey,Integer,Boolean,String
 from .database import Base
 from sqlalchemy.sql.expression import text
 from sqlalchemy.sql.sqltypes import TIMESTAMP
@@ -13,7 +13,8 @@ class Post(Base):   #sqlalchemy model:used for table definition in postgresql
     content=Column(String,nullable=False)
     published=Column(Boolean,server_default='True')
     created_at=Column(TIMESTAMP(timezone=True),nullable=False,server_default=text('now()'))
-
+    user_id=Column(Integer,ForeignKey("users.id",ondelete="CASCADE"),nullable=False)
+    user=Relationship("User")
 
 class User(Base):
     __tablename__="users"

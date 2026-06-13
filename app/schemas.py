@@ -14,24 +14,26 @@ class PostBase(BaseModel):
 class CreatePost(PostBase):
     pass
 
+class UserResponse(BaseModel):
+    id:int
+    email:EmailStr
+    created_at:datetime
+    model_config = ConfigDict(from_attributes=True)
+
 class PostResponse(BaseModel):
     id:int
     title:str
     content:str
     published:bool
     created_at:datetime
-
+    user_id:int
+    user:UserResponse
     model_config = ConfigDict(from_attributes=True)
 
 class UserCreate(BaseModel):
     email:EmailStr
     password:str
 
-class UserResponse(BaseModel):
-    id:int
-    email:EmailStr
-    created_at:datetime
-    model_config = ConfigDict(from_attributes=True)
 
 class UserLogin(BaseModel):
     email:EmailStr
