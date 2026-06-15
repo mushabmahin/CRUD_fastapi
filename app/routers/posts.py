@@ -1,12 +1,10 @@
 
-from websockets import Router
 from typing import Optional
 from .. import models,schemas,oauth2
-from fastapi import Depends, FastAPI,Response,HTTPException,status,APIRouter
-from ..database import engine,get_db
+from fastapi import Depends,Response,HTTPException,status,APIRouter
+from ..database import get_db
 from sqlalchemy.orm import Session
 from typing import List
-
 
 
 router=APIRouter(prefix="/posts",tags=['Posts'])
