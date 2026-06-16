@@ -3,7 +3,7 @@
 from datetime import datetime
 from typing import Optional
 
-from pydantic import ConfigDict, BaseModel,EmailStr
+from pydantic import ConfigDict, BaseModel,EmailStr, conint
 
 
 class PostBase(BaseModel):
@@ -13,6 +13,8 @@ class PostBase(BaseModel):
 
 class CreatePost(PostBase):
     pass
+
+
 
 class UserResponse(BaseModel):
     id:int
@@ -28,8 +30,16 @@ class PostResponse(BaseModel):
     created_at:datetime
     user_id:int
     user:UserResponse
+    
     model_config = ConfigDict(from_attributes=True)
 
+class PostOut(BaseModel):
+    Post: PostResponse
+    Votes: int
+
+    model_config = ConfigDict(from_attributes=True)
+
+    
 class UserCreate(BaseModel):
     email:EmailStr
     password:str
@@ -45,3 +55,8 @@ class Token(BaseModel):
 
 class TokenData(BaseModel):
     id:Optional[int]=None
+
+
+class Vote(BaseModel):
+    post_id :int
+    direction:conint(le=1)

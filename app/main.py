@@ -1,14 +1,9 @@
 #from random import randrange
 
-from typing import List, Optional
-import psycopg2
-from psycopg2.extras import RealDictCursor
-from pydantic import BaseModel
-import time
 
-from . import models,schemas,utils
+from . import models
 from fastapi import FastAPI
-from .routers import posts,users,auth
+from .routers import posts,users,auth,votes
 from .database import engine
 
 models.Base.metadata.create_all(bind=engine)
@@ -50,7 +45,7 @@ def root():
 app.include_router(posts.router)
 app.include_router(users.router)
 app.include_router(auth.router)
-
+app.include_router(votes.router)
 
 
 
