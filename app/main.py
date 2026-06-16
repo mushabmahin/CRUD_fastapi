@@ -5,12 +5,21 @@ from . import models
 from fastapi import FastAPI
 from .routers import posts,users,auth,votes
 from .database import engine
+from fastapi.middleware.cors import CORSMiddleware
 
-models.Base.metadata.create_all(bind=engine)
+#models.Base.metadata.create_all(bind=engine)
 
 app=FastAPI()
 
 
+origins=["*"]   #fetch('http://localhost:8000/').then(res=>res.json()).then(console.log)
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # my_data=[{"title" :"food","content":"pizza","id":1},{"title" :"game","content":"gta","id":2}]
 
