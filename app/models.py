@@ -1,5 +1,5 @@
 from datetime import datetime
-from sqlalchemy.orm import Relationship
+from sqlalchemy.orm import relationship
 from sqlalchemy import   Column, ForeignKey,Integer,Boolean,String
 from .database import Base
 from sqlalchemy.sql.expression import text
@@ -14,7 +14,7 @@ class Post(Base):   #sqlalchemy model:used for table definition in postgresql
     published=Column(Boolean,server_default='True')
     created_at=Column(TIMESTAMP(timezone=True),nullable=False,server_default=text('now()'))
     user_id=Column(Integer,ForeignKey("users.id",ondelete="CASCADE"),nullable=False)
-    user=Relationship("User")
+    user=relationship("User")
 
 class User(Base):
     __tablename__="users"
@@ -28,3 +28,6 @@ class Vote(Base):
     __tablename__="votes"
     user_id=Column(Integer,ForeignKey("users.id",ondelete="CASCADE"),primary_key=True)
     post_id=Column(Integer,ForeignKey("posts.id",ondelete="CASCADE"),primary_key=True)
+
+
+print(Base.metadata.tables.keys())

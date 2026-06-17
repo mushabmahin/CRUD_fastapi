@@ -2,10 +2,15 @@ from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from .config import settings
+import os
+from dotenv import load_dotenv
 
-SQL_ALCHEMY_URL=f'postgresql://{settings.database_username}:{settings.database_pswrd}@{settings.database_hostname}:{settings.database_portname}/{settings.database_name}'
+load_dotenv()
 
-engine=create_engine(SQL_ALCHEMY_URL)
+DATABASE_URL = os.getenv("DATABASE_URL")
+#SQL_ALCHEMY_URL=f'postgresql://{settings.database_username}:{settings.database_pswrd}@{settings.database_hostname}:{settings.database_portname}/{settings.database_name}'
+
+engine=create_engine(DATABASE_URL, connect_args={"sslmode": "require"})
 
 SessionLocal=sessionmaker(autocommit=False,autoflush=False,bind=engine)
 
