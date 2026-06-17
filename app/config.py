@@ -9,6 +9,7 @@ class Settings(BaseSettings):
     algorithm: str
     secret_key: str
     algorithm_exp_min: int
+    database_url:str
 
     model_config = SettingsConfigDict(env_file=".env")
 
